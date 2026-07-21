@@ -221,5 +221,64 @@ main_menu
 esac
 
 }
+create_minecraft_server() {
+
+# sara code yaha
+
+}
+main_menu
+case $OPTION in
+
+1)
+
+create_minecraft_server
+;;
+
+2)
+
+echo "Java Already Installed"
+;;
+
+3)
+
+...
+echo
+echo "Downloading Purpur Server..."
+
+wget -O server.jar "https://api.purpurmc.org/v2/purpur/$MC_VERSION/latest/download"
+
+if [ ! -f server.jar ]; then
+    echo "Download Failed!"
+    exit 1
+fi
+
+echo
+echo "Creating Start Script..."
+
+cat > start.sh <<EOF
+#!/bin/bash
+java -Xms${RAM_GB}G -Xmx${RAM_GB}G -jar server.jar nogui
+EOF
+
+chmod +x start.sh
+
+echo
+echo "========================================"
+echo "Minecraft Server Installed Successfully!"
+echo "========================================"
+
+echo "Server Folder : /opt/minecraft"
+
+echo "Run Server With"
+
+echo "./start.sh"
+
+echo
+
+read -p "Start Server Now? (y/n): " START
+
+if [[ "$START" == "y" || "$START" == "Y" ]]; then
+    ./start.sh
+fi
 
 main_menu
