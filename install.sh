@@ -89,7 +89,6 @@ case $OPTION in
 
 
 1)
-    1)
     create_minecraft_server
     ;;
 
