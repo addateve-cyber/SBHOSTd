@@ -85,12 +85,12 @@ echo " [4] Exit"
 echo
 
 read -p "Select Option: " OPTION
+case $OPTION in
 
-case "$OPTION" in
 
 1)
-    echo "Create Minecraft Server - Coming in Step 3"
-    read -p "Press Enter..."
+    1)
+    create_minecraft_server
     ;;
 
 2)
