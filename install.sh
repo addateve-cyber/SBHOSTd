@@ -106,7 +106,71 @@ case $OPTION in
 
 1)
 
-echo "Create Minecraft Server"
+create_minecraft_server() {
+
+clear
+
+echo "=========================================="
+echo "     SBHOST Minecraft Setup Wizard"
+echo "=========================================="
+echo
+
+read -p "Server Name: " SERVER_NAME
+read -p "Owner Email: " EMAIL
+read -p "Admin Username: " USERNAME
+read -s -p "Admin Password: " PASSWORD
+echo
+echo
+
+read -p "Minecraft Version (example: 1.21.8): " MC_VERSION
+read -p "RAM (GB): " RAM_GB
+read -p "Server Port [25565]: " PORT
+
+PORT=${PORT:-25565}
+
+echo
+echo "=========================================="
+echo "Configuration Summary"
+echo "=========================================="
+
+echo "Server Name : $SERVER_NAME"
+echo "Email       : $EMAIL"
+echo "Username    : $USERNAME"
+echo "Version     : $MC_VERSION"
+echo "RAM         : ${RAM_GB}GB"
+echo "Port        : $PORT"
+
+echo
+read -p "Continue? (y/n): " CONFIRM
+
+if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+    main_menu
+fi
+
+echo
+echo "Creating folders..."
+
+mkdir -p /opt/minecraft
+cd /opt/minecraft
+
+echo "eula=true" > eula.txt
+
+cat > server.properties <<EOF
+motd=$SERVER_NAME
+server-port=$PORT
+online-mode=true
+max-players=20
+view-distance=10
+simulation-distance=10
+EOF
+
+echo
+echo "Minecraft directory created successfully!"
+echo
+echo "Next step: Downloading Minecraft server..."
+sleep 3
+
+}
 
 ;;
 
