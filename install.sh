@@ -123,5 +123,76 @@ esac
 done
 
 }
+create_minecraft_server() {
 
+clear
+
+echo "========================================"
+echo "      SBHOST Minecraft Setup Wizard"
+echo "========================================"
+echo
+
+read -p "Server Name: " SERVER_NAME
+read -p "Minecraft Version (Example: 1.21.8): " MC_VERSION
+read -p "RAM (GB): " RAM_GB
+read -p "Server Port [25565]: " PORT
+
+PORT=${PORT:-25565}
+
+echo
+echo "Creating Minecraft Server..."
+
+mkdir -p /opt/minecraft
+cd /opt/minecraft
+
+echo "eula=true" > eula.txt
+
+cat > server.properties <<EOF
+motd=$SERVER_NAME
+server-port=$PORT
+online-mode=true
+max-players=20
+view-distance=10
+simulation-distance=10
+EOF
+
+echo
+echo "Downloading Purpur..."
+
+wget -O server.jar "https://api.purpurmc.org/v2/purpur/${MC_VERSION}/latest/download"
+
+if [ ! -f server.jar ]; then
+    echo
+    echo "ERROR: Failed to download Minecraft server."
+    read -p "Press Enter..."
+    main_menu
+    return
+fi
+
+cat > start.sh <<EOF
+#!/bin/bash
+java -Xms${RAM_GB}G -Xmx${RAM_GB}G -jar server.jar nogui
+EOF
+
+chmod +x start.sh
+
+echo
+echo "========================================"
+echo "Minecraft Server Installed!"
+echo "========================================"
+echo
+echo "Folder : /opt/minecraft"
+echo "Start  : ./start.sh"
+echo
+
+read -p "Start Server Now? (y/n): " START
+
+if [[ "$START" == "y" || "$START" == "Y" ]]; then
+    ./start.sh
+fi
+
+read -p "Press Enter to return menu..."
+main_menu
+
+}
 main_menu
